@@ -50,6 +50,7 @@ namespace Arduino_CPU_and_GPU_temperarure_display
             this.radioWhite = new System.Windows.Forms.RadioButton();
             this.ledCheck = new System.Windows.Forms.CheckBox();
             this.radioUA = new System.Windows.Forms.RadioButton();
+            this.radioAmbilight = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.Brightness)).BeginInit();
             this.SuspendLayout();
             // 
@@ -187,7 +188,7 @@ namespace Arduino_CPU_and_GPU_temperarure_display
             // 
             this.radioTemperature.AutoSize = true;
             this.radioTemperature.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.radioTemperature.Location = new System.Drawing.Point(263, 119);
+            this.radioTemperature.Location = new System.Drawing.Point(259, 106);
             this.radioTemperature.Name = "radioTemperature";
             this.radioTemperature.Size = new System.Drawing.Size(85, 17);
             this.radioTemperature.TabIndex = 13;
@@ -200,20 +201,19 @@ namespace Arduino_CPU_and_GPU_temperarure_display
             // 
             this.radioSingle.AutoSize = true;
             this.radioSingle.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.radioSingle.Location = new System.Drawing.Point(263, 142);
+            this.radioSingle.Location = new System.Drawing.Point(259, 129);
             this.radioSingle.Name = "radioSingle";
             this.radioSingle.Size = new System.Drawing.Size(81, 17);
             this.radioSingle.TabIndex = 14;
             this.radioSingle.TabStop = true;
             this.radioSingle.Text = "Single Color";
             this.radioSingle.UseVisualStyleBackColor = true;
-            this.radioSingle.CheckedChanged += new System.EventHandler(this.radioSingle_CheckedChanged);
             // 
             // radioWhite
             // 
             this.radioWhite.AutoSize = true;
             this.radioWhite.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.radioWhite.Location = new System.Drawing.Point(263, 165);
+            this.radioWhite.Location = new System.Drawing.Point(259, 152);
             this.radioWhite.Name = "radioWhite";
             this.radioWhite.Size = new System.Drawing.Size(53, 17);
             this.radioWhite.TabIndex = 15;
@@ -243,7 +243,7 @@ namespace Arduino_CPU_and_GPU_temperarure_display
             // 
             this.radioUA.AutoSize = true;
             this.radioUA.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.radioUA.Location = new System.Drawing.Point(263, 188);
+            this.radioUA.Location = new System.Drawing.Point(259, 175);
             this.radioUA.Name = "radioUA";
             this.radioUA.Size = new System.Drawing.Size(63, 17);
             this.radioUA.TabIndex = 17;
@@ -252,11 +252,26 @@ namespace Arduino_CPU_and_GPU_temperarure_display
             this.radioUA.UseVisualStyleBackColor = true;
             this.radioUA.CheckedChanged += new System.EventHandler(this.radioUA_CheckedChanged);
             // 
+            // radioAmbilight
+            // 
+            this.radioAmbilight.AutoSize = true;
+            this.radioAmbilight.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.radioAmbilight.Location = new System.Drawing.Point(259, 198);
+            this.radioAmbilight.Name = "radioAmbilight";
+            this.radioAmbilight.Size = new System.Drawing.Size(67, 17);
+            this.radioAmbilight.TabIndex = 18;
+            this.radioAmbilight.TabStop = true;
+            this.radioAmbilight.Text = "Ambilight";
+            this.radioAmbilight.UseVisualStyleBackColor = true;
+            this.radioAmbilight.CheckedChanged += new System.EventHandler(this.radioAmbilight_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(421, 216);
+            this.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.ClientSize = new System.Drawing.Size(391, 228);
+            this.Controls.Add(this.radioAmbilight);
             this.Controls.Add(this.radioUA);
             this.Controls.Add(this.ledCheck);
             this.Controls.Add(this.radioWhite);
@@ -273,6 +288,7 @@ namespace Arduino_CPU_and_GPU_temperarure_display
             this.Controls.Add(this.label1);
             this.Controls.Add(this.comboBox2);
             this.Controls.Add(this.comboBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Temperature CPU/GPU";
@@ -305,6 +321,7 @@ namespace Arduino_CPU_and_GPU_temperarure_display
         private System.Windows.Forms.RadioButton radioWhite;
         private System.Windows.Forms.CheckBox ledCheck;
         private System.Windows.Forms.RadioButton radioUA;
+        private System.Windows.Forms.RadioButton radioAmbilight;
     }
 }
 
