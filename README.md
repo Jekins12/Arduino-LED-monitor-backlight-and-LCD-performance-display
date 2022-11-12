@@ -3,5 +3,8 @@
 ## How it works?
 Program connecting to arduino via serial port (USB) and sending temperature values, current time, and data (colors) depending on the chosen mode.
 ## Available modes
-* Temperature
+* Temperature - backlight color changes from blue to red depending on GPU temperature
+* Single color -->
+
+###
 ![app](https://user-images.githubusercontent.com/92518823/201470841-2bd74fac-de7e-4d50-8f09-7f31d22ccdcf.png)
