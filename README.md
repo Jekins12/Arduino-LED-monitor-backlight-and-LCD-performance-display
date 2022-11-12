@@ -11,6 +11,9 @@ Program connecting to arduino via serial port (USB) and sending temperature valu
 
 ###
 ![app](https://user-images.githubusercontent.com/92518823/201470841-2bd74fac-de7e-4d50-8f09-7f31d22ccdcf.png)
+### Connection
+![connection](https://user-images.githubusercontent.com/92518823/201472048-3e4b4e2d-323d-4baa-afa2-807f1f2e8ff8.png)
+###
 
 ## Known bugs
 * Ambilight <br />
