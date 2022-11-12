@@ -13,5 +13,5 @@ Program connecting to arduino via serial port (USB) and sending temperature valu
 ![app](https://user-images.githubusercontent.com/92518823/201470841-2bd74fac-de7e-4d50-8f09-7f31d22ccdcf.png)
 
 ## Known bugs
-* Ambilight
+* Ambilight \n
 Ambilight is a pretty heavy mode for arduino, it works but due to simultaneous sending temperature to LCD and color data to LED, data sometimes are mixing together, and random LEDs are glitching and changing color. To "fix" it, I just stop transferring data to LCD until mode change.
