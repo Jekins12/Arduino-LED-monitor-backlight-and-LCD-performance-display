@@ -29,6 +29,11 @@ namespace Arduino_CPU_and_GPU_temperarure_display
 
         bool hide_on_open = false;           // Hide window on start
         int NUM_LEDS = 30;                  // define number of led's  (I have 1 strip (15 led) on top of the monitor and 1 (15 -> bottom))
+
+        int resolution_X = 4;               // default 4 (1-7);
+        int resolution_Y = 4;               // default 
+        
+        
         
 
 
@@ -381,7 +386,7 @@ namespace Arduino_CPU_and_GPU_temperarure_display
 
             if (frame_num <= NUM_LEDS / 2)
             {
-                for (int x = bitmap.Width / (NUM_LEDS / 2) * frame_num - bitmap.Width / (NUM_LEDS / 2); x < bitmap.Width / (NUM_LEDS / 2) * frame_num; x += 16)
+                for (int x = bitmap.Width / (NUM_LEDS / 2) * frame_num - bitmap.Width / (NUM_LEDS / 2); x < bitmap.Width / (NUM_LEDS / 2) * frame_num; x += (int)Math.Pow(resolution_X, 2))
                 {
 
                     for (int y = 0 + shift; y < bitmap.Height / 6 + shift; y += 18)
@@ -402,7 +407,7 @@ namespace Arduino_CPU_and_GPU_temperarure_display
             {
                 frame_num -= NUM_LEDS / 2;
 
-                for (int x = bitmap.Width / (NUM_LEDS / 2) * frame_num - bitmap.Width / (NUM_LEDS / 2); x < bitmap.Width / (NUM_LEDS / 2) * frame_num; x += 16)
+                for (int x = bitmap.Width / (NUM_LEDS / 2) * frame_num - bitmap.Width / (NUM_LEDS / 2); x < bitmap.Width / (NUM_LEDS / 2) * frame_num; x += (int)Math.Pow(resolution_X, 2))
                 {
                     for (int y = bitmap.Height / 6 * 5 - shift; y < bitmap.Height - shift; y += 18)
                     {
