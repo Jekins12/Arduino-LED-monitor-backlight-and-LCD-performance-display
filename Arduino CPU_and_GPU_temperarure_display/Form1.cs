@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO.Ports;
 using OpenHardwareMonitor.Hardware;
@@ -30,9 +27,8 @@ namespace Arduino_CPU_and_GPU_temperarure_display
         int R = 255, G = 255, B = 255;
         
 
-        bool flag = true;
-        //bool flag1 = true;
-        int NUM_LEDS = 30;
+        bool hide_on_open = false;           // Hide window on start
+        int NUM_LEDS = 30;                  // define number of led's  (I have 1 strip (15 led) on top of the monitor and 1 (15 -> bottom))
         
 
 
@@ -41,15 +37,13 @@ namespace Arduino_CPU_and_GPU_temperarure_display
             InitializeComponent();
             Init();
             c.Open();
-            button1_Click(null,null);
+            button1_Click(null,null);      // Autoconnect
             
         }
 
 
         private void Init()
         {
-            
-            
             colorDialog.SolidColorOnly = true;
             radioWhite.Checked = true;
             comboBox2.SelectedIndex = 4;
@@ -67,7 +61,7 @@ namespace Arduino_CPU_and_GPU_temperarure_display
                 {
                     comboBox1.Items.Add(port);
                 }
-                port.BaudRate = 500000;
+                port.BaudRate = 500000;             // 500000 baud rate only for Ambilight mode due to heavy data packets (9600 will be good without that mode)
                 comboBox1.SelectedIndex = 1;
                 
             }
@@ -79,15 +73,14 @@ namespace Arduino_CPU_and_GPU_temperarure_display
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            
             timer2.Stop();
             Status();
             tick++;
             
-            if (flag)
+            if (hide_on_open)
             {
-                //notifyIcon1.Visible = true;
                 Hide();
+                hide_on_open = false;
             }    
         }
 
@@ -111,7 +104,6 @@ namespace Arduino_CPU_and_GPU_temperarure_display
                     ledCheck.BackColor = Color.Lime;
                     ledCheck.Text = "LED On";
                     Brightness.Enabled = true;
-                    //ColorButton.Enabled = false; ;
                 }
             }
 
@@ -149,11 +141,8 @@ namespace Arduino_CPU_and_GPU_temperarure_display
 
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-
-                flag = false;
                 Show();
                 ShowInTaskbar = true;
-                //notifyIcon1.Visible = false;
                 WindowState = FormWindowState.Normal;
             
             
@@ -185,6 +174,7 @@ namespace Arduino_CPU_and_GPU_temperarure_display
 
             else if (radioAmbilight.Checked == true)
             {
+                radioAmbilight_CheckedChanged(null, null);
                 setAmbient();
             }
 
@@ -206,7 +196,6 @@ namespace Arduino_CPU_and_GPU_temperarure_display
         {
             if (radioTemperature.Checked == true)
             {
-                //timer2.Interval = 30;
                 ColorButton.Enabled = false;
             }
             else
@@ -217,7 +206,6 @@ namespace Arduino_CPU_and_GPU_temperarure_display
         {
             if (radioWhite.Checked == true)
             {
-                //timer2.Interval = 30;
                 ColorButton.Enabled = false;
             }
                 
@@ -290,7 +278,7 @@ namespace Arduino_CPU_and_GPU_temperarure_display
 
        
 
-        private void LED()
+        private void LED()                      // Getting CPU temperature and sending it's value to Arduino where it's converted to color
         {
             int temp=0;
             
@@ -323,7 +311,7 @@ namespace Arduino_CPU_and_GPU_temperarure_display
 
         }
 
-        private void setMode()
+        private void setMode()              // "Patriotic" mode XD --> defined in Arduino code
         {
             try
             {
@@ -343,20 +331,35 @@ namespace Arduino_CPU_and_GPU_temperarure_display
         {
             if (radioAmbilight.Checked == true)
             {
-                timer1.Stop();
+                timer1.Stop();                          // Stop sending data to LCD ( because of the led glitching )   need to fix (probablly add start and end pointers to data packet)
                 ColorButton.Enabled = false;
+                ambiMode.Visible = true;
             }
 
             else
             {
                 timer1.Start();
                 ColorButton.Enabled = true;
+                ambiMode.Visible = false;
             }
                 
         }
 
-        public int[] getFrame(int frame_num)
+        private void ambiNormal_CheckedChanged(object sender, EventArgs e)
         {
+
+        }
+
+        public int[] getFrame(int frame_num)                // Calculating average color for 1 frame (1 frame == 1 led) 
+        {
+            int shift = 0;
+
+            if (ambiNormal.Checked == true)
+                shift = 0;
+
+            if(ambiWide.Checked == true)
+                shift = 140;
+        
 
             int[] frame = new int[3];
 
@@ -381,7 +384,7 @@ namespace Arduino_CPU_and_GPU_temperarure_display
                 for (int x = bitmap.Width / (NUM_LEDS / 2) * frame_num - bitmap.Width / (NUM_LEDS / 2); x < bitmap.Width / (NUM_LEDS / 2) * frame_num; x += 16)
                 {
 
-                    for (int y = 0; y < bitmap.Height / 6; y += 18)
+                    for (int y = 0 + shift; y < bitmap.Height / 6 + shift; y += 18)
                     {
 
                         byte rr = bitmap.GetPixel(x, y).R;
@@ -401,7 +404,7 @@ namespace Arduino_CPU_and_GPU_temperarure_display
 
                 for (int x = bitmap.Width / (NUM_LEDS / 2) * frame_num - bitmap.Width / (NUM_LEDS / 2); x < bitmap.Width / (NUM_LEDS / 2) * frame_num; x += 16)
                 {
-                    for (int y = bitmap.Height / 6 * 5; y < bitmap.Height; y += 18)
+                    for (int y = bitmap.Height / 6 * 5 - shift; y < bitmap.Height - shift; y += 18)
                     {
                         byte rr = bitmap.GetPixel(x, y).R;
                         byte gg = bitmap.GetPixel(x, y).G;
@@ -442,7 +445,7 @@ namespace Arduino_CPU_and_GPU_temperarure_display
         }
 
 
-        public void setAmbient()
+        public void setAmbient()                // Ambilight mode
         {
             
             int[] screen = GetScreen();
@@ -463,7 +466,7 @@ namespace Arduino_CPU_and_GPU_temperarure_display
 
 
 
-        private void setColor(int R, int G, int B)
+        private void setColor(int R, int G, int B)               // Color fill
         {
 
             try
@@ -480,7 +483,7 @@ namespace Arduino_CPU_and_GPU_temperarure_display
             }
         }
 
-        private void setBrightness(int brightness)
+        private void setBrightness(int brightness)          // Set brightness for led strip
         {
             try
             {
@@ -498,7 +501,7 @@ namespace Arduino_CPU_and_GPU_temperarure_display
 
 
 
-        private void Status()
+        private void Status()               // Sending data for LCD
         {
             if (tick < 20)
             {
